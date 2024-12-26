@@ -1,8 +1,0 @@
-# ninja log v6
-30	2461	7569491596740028	CMakeFiles/acerlib.dir/src/acerlib_pathmanip.cpp.obj	3f86ec2bc54a1d1f
-2627	2797	7569490792374907	C:/Users/adote/projects/cpp/acer-liblib/debug/libacerlib.a	77a05dc52d44a471
-727	909	7569472004802230	libacerlib.a	955a6a2b67b0bc6
-2568	2760	7569490136025004	C:/Users/adote/projects/cpp/acer-libdebug/lib/libacerlib.a	28676f342e486fc9
-2462	2620	7569491621052243	C:/Users/adote/projects/cpp/acer-lib/lib/debug/libacerlib.a	400ba1d6f331cc0b
-23	2126	7569492519312272	CMakeFiles/acerlib.dir/src/acerlib_pathmanip.cpp.obj	e34d9d43ca691fdc
-2127	2315	7569492540347146	C:/Users/adote/projects/cpp/acer-lib/lib/release/libacerlib.a	99a53ecb2f3f87e8

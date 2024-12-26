@@ -1,3 +1,0 @@
-C:/Users/adote/projects/cpp/acer-lib/build/CMakeFiles/acerlib.dir
-C:/Users/adote/projects/cpp/acer-lib/build/CMakeFiles/edit_cache.dir
-C:/Users/adote/projects/cpp/acer-lib/build/CMakeFiles/rebuild_cache.dir
