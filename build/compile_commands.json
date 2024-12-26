@@ -1,0 +1,8 @@
+[
+{
+  "directory": "C:/Users/adote/projects/cpp/acer-lib/build",
+  "command": "g++ -IC:/Users/adote/projects/cpp/acer-lib/include -O3 -DNDEBUG -fdiagnostics-color=always -Wall -Wextra -Wno-unused -o CMakeFiles\\acerlib.dir\\src\\acerlib_pathmanip.cpp.obj -c C:\\Users\\adote\\projects\\cpp\\acer-lib\\src\\acerlib_pathmanip.cpp",
+  "file": "C:\\Users\\adote\\projects\\cpp\\acer-lib\\src\\acerlib_pathmanip.cpp",
+  "output": "CMakeFiles\\acerlib.dir\\src\\acerlib_pathmanip.cpp.obj"
+}
+]
