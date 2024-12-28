@@ -1,4 +1,4 @@
-#include "acerlib_pathmanip.h"
+#include "acerlib/acerlib_pathmanip.h"
 #if defined(_WIN32)
 	#include <windows.h>
 #elif defined(__linux__)
@@ -8,7 +8,7 @@
 #endif
 
 
-bool acer::path::ends_with_separator(const std::string& path) {
+bool acer::path::ends_with_separator(std::string path) {
 	return std::string("/\\").find(path.back()) != std::string::npos;
 }
 
@@ -45,7 +45,7 @@ std::string acer::path::fix_separators(std::string path, char sep) {
 }
 
 
-std::string acer::path::join_paths(std::initializer_list<const std::string> paths, char sep)
+std::string acer::path::join_paths(std::initializer_list<std::string> paths, char sep)
 {
 	if (paths.size() == 0) {
 		return "";
@@ -53,16 +53,16 @@ std::string acer::path::join_paths(std::initializer_list<const std::string> path
 
 	std::string full_path = *paths.begin();
 
-	for (const std::string& path : paths)
+	for (auto it = paths.begin() + 1; it != paths.end(); it++)
 	{
-		full_path += sep + path;
+		full_path += sep + *it;
 	}
 
 	return fix_separators(full_path, sep);
 }
 
 
-std::string acer::path::parent_of(const std::string& dir, int depth, char sep)
+std::string acer::path::parent_of(std::string dir, int depth, char sep)
 {
 	std::string result = dir;
 	size_t separator_index;
@@ -79,13 +79,13 @@ std::string acer::path::parent_of(const std::string& dir, int depth, char sep)
 }
 
 
-std::string acer::path::parent_of(const std::string& dir, char sep)
+std::string acer::path::parent_of(std::string dir, char sep)
 {
 	return parent_of(dir, 1, sep);
 }
 
 
-std::string acer::path::get_binary_dir(int len)
+std::string acer::path::get_executable_path(int len)
 {
 	char * strbuffer = new char[len];
     #if defined(_WIN32)

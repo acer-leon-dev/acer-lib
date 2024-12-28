@@ -1,6 +1,7 @@
 # acer-lib
 
-An open source c++ utility library
+An open source C++ utility library
 
 ### Features
-* Functions for retreiving and manipulating paths
+* Path manipulation functions
+* SFML (Simple and Fast Multimedia Library) extension functions
