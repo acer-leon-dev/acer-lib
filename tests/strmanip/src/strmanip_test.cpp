@@ -29,4 +29,11 @@ int main()
     std::println("    {}", to_upper(sample4));
     std::println();
 
+    // Tokens
+    std::string sample5 = "   std::vector<int> myVector = { 1, 2, 3, 4, 5 };    ";
+    std::println("strmanip::to_upper(\"{}\"):", sample5);
+    int num = 0;
+    for (auto tok : string_to_tokens(sample5, " ")) {
+        println("    {}. \"{}\"", num, tok); num++;
+    }
 }

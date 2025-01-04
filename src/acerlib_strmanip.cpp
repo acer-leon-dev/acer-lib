@@ -76,7 +76,8 @@ std::vector<std::string> acer::strmanip::string_to_tokens(std::string str, std::
     std::vector<std::string> res;
     for (auto it = str.begin(); it != str.end();)
     {
-        res.push_back(stringtok(it, str, delims));
+        auto tok = stringtok(it, str, delims);
+        if (!tok.empty()) { res.push_back(tok); };
     }
     return res;
 }
