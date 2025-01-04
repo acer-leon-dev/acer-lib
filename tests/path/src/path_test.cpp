@@ -13,11 +13,14 @@ int main()
         to_directory(p));
     std::println("p parent dir:       {}", 
         parent_of(p));
+        
     std::string exe = 
         fix_separators(
             get_executable_path(), '/');
     std::println("executable:         {}", exe);
-    std::println("executable name     {}", name_of(exe));
+    std::println("program name        {}", name_of(exe, false));
+    std::println("program name (ext)  {}", name_of(exe, true));
+
     std::string d = R"(dirD//\\\dirE////dirG//////\\\\\\\/)";
     std::string e = R"(///////dirH\\\dirI\\\////\\//\\//hello.txt)";    
     std::println("d:                  {}", d);

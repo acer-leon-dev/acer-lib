@@ -99,7 +99,7 @@ std::string acer::path::get_executable_path()
 	return res;
 }
 
-std::string acer::path::name_of(std::string path)
+std::string acer::path::name_of(std::string path, bool keep_extension)
 {
 	if (path.empty()) {
 		return "";
@@ -110,6 +110,11 @@ std::string acer::path::name_of(std::string path)
 
 	if (is_directory(path)) {
 		pos = path.find_last_not_of("/\\");
+	} 
+	else {
+		if (!keep_extension) {
+			pos = path.find_last_of('.');
+		}
 	}
 	
 	start = path.find_last_of("/\\", pos) + 1;

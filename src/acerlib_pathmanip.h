@@ -26,7 +26,7 @@ namespace acer::path
 
     std::string get_executable_path();
 
-    std::string name_of(std::string path);
+    std::string name_of(std::string path, bool keep_extension);
 };
 
 #include "acerlib_pathmanip.tpp"
