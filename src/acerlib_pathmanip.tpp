@@ -10,7 +10,10 @@ void _join_paths_internal(char sep, std::string& _path);
 template<std::convertible_to<std::string>... Args>
 void _join_paths_internal(char sep, std::string& _path, std::string _next, Args... paths)
 {
-    _path += sep + _next;
+    if (!_path.empty()) {
+        _path += sep;
+    }
+    _path += _next;
     _join_paths_internal(sep, _path, paths...);
 }
 

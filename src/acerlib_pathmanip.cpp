@@ -28,15 +28,15 @@ std::string acer::path::to_directory(std::string path, char sep) {
 std::string acer::path::fix_separators(std::string path, char sep) {
 	size_t start_index = 0;
 	size_t end_index = 0;
-	while (end_index < path.size()) {
+	while (end_index != std::string::npos) {
 		start_index = path.find_first_of("/\\", start_index);
 		end_index = path.find_first_not_of("/\\", start_index);
-		if (end_index != std::string::npos)
+		if (start_index != std::string::npos)
 		{
 			path.replace(start_index, end_index - start_index, 1, sep);
 		}
 		start_index++;
-	} 
+	}
 
 	for (char & c : path) {
 		if (std::string("/\\").find(c) != std::string::npos) {
@@ -70,36 +70,8 @@ std::string acer::path::parent_of(std::string dir, char sep)
 	return parent_of(dir, 1, sep);
 }
 
-char acer::path::get_separator()
-{
-	#ifdef _WIN32
-		return '\\';
-	#elif defined(__linux__) || defined(__APPLE__) || defined(__unix__)
-		return '/';
-	#else
-		return '/';
-    #endif
-}
 
-std::string acer::path::get_executable_path()
-{
-	char * strbuffer = new char[1024];
-    #if defined(_WIN32)
-        GetModuleFileNameA(nullptr, strbuffer, 1024);
-	#elif defined(__linux__)
-        readlink("/proc/self/exe", strbuffer, 1024);
-	#elif defined(__APPLE__)
-		_NSGetExecutablePath(strbuffer, 1024) 
-	#else
-		return "";
-    #endif
-	
-	std::string res = std::string(strbuffer);
-	delete[] strbuffer;
-	return res;
-}
-
-std::string acer::path::name_of(std::string path, bool keep_extension)
+std::string acer::path::name_of(std::string path, bool keep_extension, char sep)
 {
 	if (path.empty()) {
 		return "";
@@ -120,4 +92,35 @@ std::string acer::path::name_of(std::string path, bool keep_extension)
 	start = path.find_last_of("/\\", pos) + 1;
 
 	return fix_separators(path.substr(start, pos - start));
+}
+
+
+char acer::path::get_separator()
+{
+	#ifdef _WIN32
+		return '\\';
+	#elif defined(__linux__) || defined(__APPLE__) || defined(__unix__)
+		return '/';
+	#else
+		return '/';
+    #endif
+}
+
+
+std::string acer::path::get_executable_path()
+{
+	char * strbuffer = new char[1024];
+    #if defined(_WIN32)
+        GetModuleFileNameA(nullptr, strbuffer, 1024);
+	#elif defined(__linux__)
+        readlink("/proc/self/exe", strbuffer, 1024);
+	#elif defined(__APPLE__)
+		_NSGetExecutablePath(strbuffer, 1024) 
+	#else
+		return "";
+    #endif
+	
+	std::string res = std::string(strbuffer);
+	delete[] strbuffer;
+	return res;
 }
