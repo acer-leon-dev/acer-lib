@@ -20,11 +20,14 @@ FetchContent_MakeAvailable(SFML)
 # Main Source code files ########################################
 set(SOURCES
     "src/acerlib_pathmanip.cpp"
+    "src/acerlib_strmanip.cpp"
 )
 set(HEADERS
     "src/acerlib.h"
     "src/acerlib_pathmanip.h"
     "src/acerlib_pathmanip.tpp"
+    "src/acerlib_strmanip.h"
+    "src/acerlib_strmanip.tpp"
 )
 
 # SFML extension source code files ########################################
@@ -87,9 +90,6 @@ install(
     PUBLIC_HEADER 
         DESTINATION ${ACERLIB_INCLUDE_DIR}
 )
-install(
-    FILES ${HEADERS} ${SFMLHEADERS}
-    DESTINATION ${ACERLIB_INCLUDE_DIR}
-)
 
 add_subdirectory("tests/path")
+add_subdirectory("tests/strmanip")
