@@ -1,5 +1,11 @@
 cmake_minimum_required(VERSION 3.31)
 project(acerlib LANGUAGES CXX)
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+if(WIN32)
+    link_libraries(stdc++exp)
+endif()
 
 include(FetchContent)
 FetchContent_Declare(SFML
@@ -10,60 +16,80 @@ FetchContent_Declare(SFML
     SYSTEM)
 FetchContent_MakeAvailable(SFML)
 
-set(CMAKE_C_COMPILER gcc)
-set(CMAKE_CXX_COMPILER g++)
 
-# Source code files
-set(PRIMARYSOURCEFILES
-"include/acerlib/acerlib.h"
-"include/acerlib/acerlib_pathmanip.h"
-"src/acerlib_pathmanip.cpp"
+# Main Source code files ########################################
+set(SOURCES
+    "src/acerlib_pathmanip.cpp"
+)
+set(HEADERS
+    "src/acerlib.h"
+    "src/acerlib_pathmanip.h"
+    "src/acerlib_pathmanip.tpp"
 )
 
-# SFML extension source code files
-set(SFMLEXTSOURCEFILES
-"include/acerlib/SFML/acerlib_sfml.h"
-"include/acerlib/SFML/acerlib_sfml.tcc"
+# SFML extension source code files ########################################
+set(SFMLSOURCES)
+set(SFMLHEADERS
+    "src/SFML/acerlib_sfml.h"
+    "src/SFML/acerlib_sfml.tpp"
 )
 
-# Include Directories
-set(INCLUDEDIRS
-"include"
-"src"
-)
+# Include Directories ########################################
+# set(INCLUDEDIRS)
 
 set(SFMLEXTLIBRARIES
-"SFML::Graphics"
+    "SFML::Graphics"
 )
 
-# Compilation Flags
-set(COMPILATIONFLAGS -fdiagnostics-color=always -Wall -Wextra -Wno-unused
+# Compilation Flags ########################################
+set(COMPILATIONFLAGS 
+    -fdiagnostics-color=always 
+    -Wall 
+    -Wextra 
+    -Wno-unused
 )
 if (NOT CMAKE_BUILD_TYPE STREQUAL "Release")
     list(APPEND COMPILATIONFLAGS -g)
 endif()
 
-# Create Static Library
-add_library(acerlib STATIC ${PRIMARYSOURCEFILES} ${INCLUDEDIRS})
-target_include_directories(acerlib PUBLIC ${INCLUDEDIRS})
-# target_link_libraries(acerlib PUBLIC ${LIBRARIES})
-target_compile_options(acerlib PUBLIC ${COMPILATIONFLAGS})
+# include_directories(${INCLUDEDIRS})
+add_compile_options(${COMPILATIONFLAGS})
 
-add_library(acerlib_sfml STATIC ${SFMLEXTSOURCEFILES} ${INCLUDEDIRS})
-target_include_directories(acerlib_sfml PUBLIC ${INCLUDEDIRS})
-target_link_libraries(acerlib_sfml PUBLIC ${SFMLEXTLIBRARIES})
-target_compile_options(acerlib_sfml PUBLIC ${COMPILATIONFLAGS})
+# Create Static Libraries
+add_library(acerlib STATIC ${SOURCES})
+set_target_properties(
+    acerlib
+    PROPERTIES
+        PUBLIC_HEADER "${HEADERS}"
+)
+
+add_library(acerlib_sfml INTERFACE ${SFMLHEADERS})
+target_link_libraries(acerlib_sfml INTERFACE ${SFMLEXTLIBRARIES})
+set_target_properties(
+    acerlib_sfml
+    PROPERTIES
+        PUBLIC_HEADER "${SFMLHEADERS}"
+)
 
 if (CMAKE_BUILD_TYPE STREQUAL "Release")
-    set_target_properties(acerlib PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/out/release/acerlib/lib)
-    set_target_properties(acerlib PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/out/release/acerlib/lib)
-    set_target_properties(acerlib_sfml PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/out/release/acerlib/lib)
-    set_target_properties(acerlib_sfml PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/out/release/acerlib/lib)
-    file(COPY ${CMAKE_SOURCE_DIR}/include DESTINATION ${CMAKE_SOURCE_DIR}/out/release/acerlib)
+    set(ACERLIB_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/out/release/include/acerlib)
+    set(ACERLIB_ARCHIVE_DIR ${CMAKE_SOURCE_DIR}/out/release/lib)
 else()
-    set_target_properties(acerlib PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/out/debug/acerlib/lib)
-    set_target_properties(acerlib PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/out/debug/acerlib/lib)
-    set_target_properties(acerlib_sfml PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/out/debug/acerlib/lib)
-    set_target_properties(acerlib_sfml PROPERTIES ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/out/debug/acerlib/lib)
-    file(COPY ${CMAKE_SOURCE_DIR}/include DESTINATION ${CMAKE_SOURCE_DIR}/out/debug/acerlib)
+    set(ACERLIB_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/out/debug/include/acerlib)
+    set(ACERLIB_ARCHIVE_DIR ${CMAKE_SOURCE_DIR}/out/debug/lib)
 endif()
+
+
+install(
+    TARGETS acerlib acerlib_sfml
+    ARCHIVE 
+        DESTINATION ${ACERLIB_ARCHIVE_DIR}
+    PUBLIC_HEADER 
+        DESTINATION ${ACERLIB_INCLUDE_DIR}
+)
+install(
+    FILES ${HEADERS} ${SFMLHEADERS}
+    DESTINATION ${ACERLIB_INCLUDE_DIR}
+)
+
+add_subdirectory("tests/path")
